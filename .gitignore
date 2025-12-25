@@ -3,6 +3,9 @@
 *.tmp
 *~
 .DS_Store
+*.save
+*.swp
+\#*\#
 
 # Emacs specific
 emacs.d/auto-save-list/
