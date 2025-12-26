@@ -22,6 +22,7 @@ font pango:monospace 7
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
+exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -189,9 +190,9 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-        status_command i3status
-}
+# bar {
+#         status_command i3status
+# }
 
 exec_always --no-startup-id ibus-daemon -drx
 
@@ -199,3 +200,7 @@ bindsym Print exec --no-startup-id flameshot gui
 
 # Open Emacs Client (Instant)
 bindsym $mod+Ctrl+e exec --no-startup-id emacsclient -c -a 'emacs'
+
+# Remove title bars, leave a 2 pixel colored border
+default_border pixel 1
+default_floating_border pixel 1

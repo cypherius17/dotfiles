@@ -45,6 +45,7 @@ alias vi="vim"
 alias ec="emacsclient -c -a 'emacs'"
 # 'et': Emacs Terminal (TUI) - Opens in current terminal pane
 alias et="emacsclient -nw"
+alias e="emacsclient -nw -a ''"
 
 # --- Tmux Autostart ---
 # (Ensures tmux starts only if not already inside one)
