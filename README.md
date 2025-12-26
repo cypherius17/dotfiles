@@ -9,7 +9,13 @@ Automated daily backup with sensitive data detection. Syncs at 9 PM daily.
 ## Usage
 
 ```bash
-# Manual sync
+# Restore dotfiles from remote (pulls and overwrites local configs)
+~/lab/tools/dotfiles/scripts/restore-dotfiles.sh
+
+# Restore with dry-run (preview changes without applying)
+~/lab/tools/dotfiles/scripts/restore-dotfiles.sh --dry-run
+
+# Manual sync (backup to repo)
 ~/lab/tools/dotfiles/scripts/sync-dotfiles.sh
 
 # Check for sensitive data

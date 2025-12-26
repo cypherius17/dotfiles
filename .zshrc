@@ -52,3 +52,7 @@ alias e="emacsclient -nw -a ''"
 if [ -z "$TMUX" ]; then
     tmux attach -t default || tmux new -s default
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
