@@ -4,7 +4,7 @@ Automated daily backup with sensitive data detection. Syncs at 9 PM daily.
 
 ## Synced Files
 
-`.bashrc`, `.zshrc`, `.tmux.conf`, `.emacs.d/`, `.config/i3/`, `.config/kitty/`
+`.bashrc`, `.zshrc`, `.tmux.conf`, `.emacs.d/`, `.config/i3/`, `.config/kitty/`, `.config/polybar/`, `.oh-my-zsh/custom/`
 
 ## Usage
 

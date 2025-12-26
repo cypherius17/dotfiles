@@ -93,6 +93,12 @@ fi
 # Sync config directories
 sync_directory "$HOME/.config/i3" "$REPO_DIR/config/i3"
 sync_directory "$HOME/.config/kitty" "$REPO_DIR/config/kitty"
+sync_directory "$HOME/.config/polybar" "$REPO_DIR/config/polybar"
+
+# Sync oh-my-zsh custom configurations
+if [ -d "$HOME/.oh-my-zsh/custom" ]; then
+    sync_directory "$HOME/.oh-my-zsh/custom" "$REPO_DIR/oh-my-zsh/custom"
+fi
 
 echo -e "\n${GREEN}Sync completed!${NC}\n"
 

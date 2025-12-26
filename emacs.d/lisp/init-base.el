@@ -12,20 +12,6 @@
 (setq auto-save-default nil)       ; Stop creating # files
 (electric-pair-mode 1)             ; Auto-close brackets () [] {}
 
-;; --- Evil Mode (Vim bindings) ---
-;; Since you use i3 and tmux, this is essential.
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1))
-
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
-
 ;; --- Git (Magit) ---
 ;; Purcell's favorite tool. Essential for everyone.
 (use-package magit)
@@ -74,12 +60,6 @@
 
     ;; Window (w)
     "w"  '(:ignore t :which-key "window")
-    "wl" '(evil-window-right :which-key "right")
-    "wh" '(evil-window-left :which-key "left")
-    "wk" '(evil-window-up :which-key "up")
-    "wj" '(evil-window-down :which-key "down")
-    "w/" '(evil-window-vsplit :which-key "vertical split")
-    "w-" '(evil-window-split :which-key "horizontal split")
     "wd" '(delete-window :which-key "close window")
 
     ;; Git (g)

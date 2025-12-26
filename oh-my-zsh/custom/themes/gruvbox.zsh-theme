@@ -1,0 +1,1 @@
+/home/thinkingkoi/.oh-my-zsh/custom/themes/gruvbox-zsh/gruvbox.zsh-theme
