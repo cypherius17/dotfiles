@@ -37,6 +37,10 @@
   (define-key evil-window-map (kbd "M-h") 'evil-window-left)
   (define-key evil-window-map (kbd "M-j") 'evil-window-down)
   (define-key evil-window-map (kbd "M-k") 'evil-window-up)
-  (define-key evil-window-map (kbd "M-l") 'evil-window-right))
+  (define-key evil-window-map (kbd "M-l") 'evil-window-right)
+
+  ;; 4. Use K for LSP hover info instead of man pages
+  (with-eval-after-load 'eglot
+    (define-key evil-normal-state-map (kbd "K") 'eldoc-doc-buffer)))
 
 (provide 'init-evil)

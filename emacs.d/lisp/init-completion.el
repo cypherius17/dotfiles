@@ -3,11 +3,15 @@
 ;; 1. Vertico (The drop-down menu for M-x and file switching)
 (use-package vertico
   :init
-  (vertico-mode))
+  (vertico-mode)
+  :bind (:map vertico-map
+         ("C-j" . vertico-next)
+         ("C-k" . vertico-previous)))
 
 (use-package consult
   :bind (;; A recursive grep
          ("C-s" . consult-line)           ; Search inside file (better than default C-s)
+         ("C-c s" . consult-ripgrep)      ; Search across project with ripgrep
          ("C-x b" . consult-buffer)       ; Switch buffer (better than default C-x b)
          ("M-y" . consult-yank-pop)       ; Show kill-ring history
          ;; THEMES

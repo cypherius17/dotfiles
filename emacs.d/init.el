@@ -11,6 +11,8 @@
 (require 'init-evil)       ; Evil mode
 (require 'init-ui)         ; Visuals
 (require 'init-completion) ; Auto-completion
+(require 'init-projectile) ; Project management
+(require 'init-dired)      ; File browser
 (require 'init-langs)      ; Languages
 (require 'init-markdown)
 
