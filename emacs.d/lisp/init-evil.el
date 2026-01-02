@@ -1,4 +1,4 @@
-nit-evil.el --- Evil (Vim) emulation with Doom-like powers
+;;; init-evil.el --- Evil (Vim) emulation with Doom-like powers
 ;;; Commentary:
 ;;; Code:
 
@@ -53,13 +53,13 @@ nit-evil.el --- Evil (Vim) emulation with Doom-like powers
 ;; Common Doom/Spacemacs bindings
 (evil-leader/set-key
     "f" 'find-file
-      "b" 'switch-to-buffer
-        "k" 'kill-buffer
-	  "g" 'magit-status
-	    "w" 'save-buffer
-	      "TAB" 'evil-switch-to-last-buffer ; Alternative to your "L"
-	        "y" 'clipboard-kill-ring-save     ; Backup explicit copy
-		  "p" 'clipboard-yank)              ; Backup explicit paste
+    "b" 'switch-to-buffer
+    "k" 'kill-buffer
+    "g" 'magit-status
+    "w" 'save-buffer
+    "TAB" 'evil-switch-to-last-buffer ; Alternative to your "L"
+    "y" 'clipboard-kill-ring-save     ; Backup explicit copy
+    "p" 'clipboard-yank)              ; Backup explicit paste
 
 ;; -------------------------------------------------------------------
 ;; 5. YOUR CUSTOM CONFIG (PORTED)
