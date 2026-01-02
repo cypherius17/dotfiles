@@ -1,49 +1,56 @@
-;;; init-langs.el --- Languages -*- lexical-binding: t -*-
+;;; init-langs.el --- Programming language configuration -*- lexical-binding: t -*-
 
-;; --- LSP Client (Eglot) ---
-;; Built-in to Emacs 29. Simple, fast, works with everything.
-(use-package eglot
-  :hook ((rust-mode . eglot-ensure)
-         (go-mode . eglot-ensure)
-         (python-mode . eglot-ensure)
-         (elixir-mode . eglot-ensure)
-         (js-mode . eglot-ensure)
-         (typescript-mode . eglot-ensure)
-         (scala-mode . eglot-ensure)
-         (java-mode . eglot-ensure)))
+;;; Commentary:
+;; Language modes and Eglot LSP configuration.
+
+;;; Code:
 
 ;; --- Rust ---
-(use-package rust-mode)
+(require-package 'rust-mode)
 
 ;; --- Golang ---
-(use-package go-mode)
+(require-package 'go-mode)
 
 ;; --- Python ---
-(use-package python
-  :hook (python-mode . eglot-ensure))
+;; Built-in python-mode, just add eglot hook
 
 ;; --- Elixir ---
-(use-package elixir-mode)
+(maybe-require-package 'elixir-mode)
 
-;; --- Web (JS/TS/HTML/CSS) ---
-;; Emacs 29+ has built-in typescript-ts-mode, but web-mode is still great for mixed files
-(use-package web-mode
-  :mode ("\\.html?\\'" "\\.css\\'" "\\.scss\\'" "\\.tsx\\'" "\\.jsx\\'")
-  :config
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2))
+;; --- TypeScript ---
+(maybe-require-package 'typescript-mode)
 
-(use-package typescript-mode)
+;; --- Web Mode (HTML/CSS/JSX/TSX) ---
+(when (maybe-require-package 'web-mode)
+  (tk/add-auto-mode 'web-mode
+                    "\\.html?\\'"
+                    "\\.css\\'"
+                    "\\.scss\\'"
+                    "\\.tsx\\'"
+                    "\\.jsx\\'")
+  (with-eval-after-load 'web-mode
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)))
 
-;; --- Java/Scala ---
-(use-package scala-mode)
-;; Note: Java requires 'jdtls' installed on your system for Eglot to work.
+;; --- Scala ---
+(maybe-require-package 'scala-mode)
 
-;; --- Infrastructure (Terraform/Yaml/Docker) ---
-(use-package terraform-mode)
-(use-package yaml-mode)
-(use-package dockerfile-mode)
-(use-package markdown-mode)
+;; --- Infrastructure ---
+(maybe-require-package 'terraform-mode)
+(maybe-require-package 'yaml-mode)
+(maybe-require-package 'dockerfile-mode)
+
+;; --- Eglot LSP hooks ---
+(dolist (hook '(rust-mode-hook
+                go-mode-hook
+                python-mode-hook
+                elixir-mode-hook
+                js-mode-hook
+                typescript-mode-hook
+                scala-mode-hook
+                java-mode-hook))
+  (add-hook hook 'eglot-ensure))
 
 (provide 'init-langs)
+;;; init-langs.el ends here

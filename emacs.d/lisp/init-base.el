@@ -1,74 +1,70 @@
 ;;; init-base.el --- Core settings -*- lexical-binding: t -*-
 
+;;; Commentary:
+;; Basic Emacs settings, OS-specific configurations, and core packages.
+
+;;; Code:
+
 ;; --- OS Specifics ---
 (when (eq system-type 'darwin)
-  ;; On macOS, make Command key behave like Meta (Alt)
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'none))
 
 ;; --- Basics ---
-(setq inhibit-startup-message t)   ; No splash screen
-(setq make-backup-files nil)       ; Stop creating ~ files
-(setq auto-save-default nil)       ; Stop creating # files
-(electric-pair-mode 1)             ; Auto-close brackets () [] {}
+(setq inhibit-startup-message t)
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+(electric-pair-mode 1)
 
 ;; --- Git (Magit) ---
-;; Purcell's favorite tool. Essential for everyone.
-(use-package magit)
+(require-package 'magit)
 
-;; --- Project Management ---
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  (setq projectile-project-search-path '("~/workspace" "~/projects"))) ; Update this!
+;; --- Which Key ---
+(when (maybe-require-package 'which-key)
+  (add-hook 'after-init-hook 'which-key-mode)
+  (with-eval-after-load 'which-key
+    (setq which-key-idle-delay 0.3)))
 
-;; --- Which Key (The helper popup) ---
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 0.3)) ; Show popup after 0.3 seconds
+;; --- General (Leader Key Setup) ---
+(require-package 'general)
 
-;; --- General (The Leader Key Setup) ---
-(use-package general
-  :config
-  (general-create-definer my-leader-def
-    :prefix "SPC"
-    :states '(normal visual motion)
-    :keymaps 'override)
+(with-eval-after-load 'evil
+  (with-eval-after-load 'general
+    (general-create-definer tk/leader-def
+      :prefix "SPC"
+      :states '(normal visual motion)
+      :keymaps 'override)
 
-  ;; Define your menu
-  (my-leader-def
-    "SPC" '(execute-extended-command :which-key "M-x") ; SPC SPC = M-x
-    "."   '(find-file :which-key "find file")          ; SPC .   = find file
-    
-    ;; Files (f)
-    "f"  '(:ignore t :which-key "files")
-    "ff" '(find-file :which-key "find file")
-    "fs" '(save-buffer :which-key "save file")
-    "fr" '(consult-recent-file :which-key "recent files")
+    (tk/leader-def
+      "SPC" '(execute-extended-command :which-key "M-x")
+      "."   '(find-file :which-key "find file")
 
-    ;; Buffers (b)
-    "b"  '(:ignore t :which-key "buffers")
-    "bb" '(consult-buffer :which-key "switch buffer")  ; The best switcher!
-    "bk" '(kill-current-buffer :which-key "kill buffer")
-    "bn" '(next-buffer :which-key "next buffer")
-    "bp" '(previous-buffer :which-key "prev buffer")
+      ;; Files (f)
+      "f"  '(:ignore t :which-key "files")
+      "ff" '(find-file :which-key "find file")
+      "fs" '(save-buffer :which-key "save file")
+      "fr" '(consult-recent-file :which-key "recent files")
 
-    ;; Window (w)
-    "w"  '(:ignore t :which-key "window")
-    "wd" '(delete-window :which-key "close window")
+      ;; Buffers (b)
+      "b"  '(:ignore t :which-key "buffers")
+      "bb" '(consult-buffer :which-key "switch buffer")
+      "bk" '(kill-current-buffer :which-key "kill buffer")
+      "bn" '(next-buffer :which-key "next buffer")
+      "bp" '(previous-buffer :which-key "prev buffer")
 
-    ;; Git (g)
-    "g"  '(:ignore t :which-key "git")
-    "gg" '(magit-status :which-key "status")
-    
-    ;; Project (p)
-    "p"  '(:ignore t :which-key "project")
-    "pf" '(projectile-find-file :which-key "find file")
-    "pp" '(projectile-switch-project :which-key "switch project")
-    "ps" '(projectile-ag :which-key "search text")))
+      ;; Window (w)
+      "w"  '(:ignore t :which-key "window")
+      "wd" '(delete-window :which-key "close window")
+
+      ;; Git (g)
+      "g"  '(:ignore t :which-key "git")
+      "gg" '(magit-status :which-key "status")
+
+      ;; Project (p)
+      "p"  '(:ignore t :which-key "project")
+      "pf" '(projectile-find-file :which-key "find file")
+      "pp" '(projectile-switch-project :which-key "switch project")
+      "ps" '(projectile-ripgrep :which-key "search text"))))
+
 (provide 'init-base)
+;;; init-base.el ends here

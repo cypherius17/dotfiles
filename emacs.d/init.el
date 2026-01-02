@@ -1,24 +1,47 @@
 ;;; init.el --- Load the full configuration -*- lexical-binding: t -*-
 
-;; 1. Add 'lisp' folder to load-path
+;;; Commentary:
+;; Main entry point for the Emacs configuration.
+
+;;; Code:
+
+;; Add lisp folder to load-path
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-;; We must set this variable before ANY module (like init-base) loads Evil
+
+;; CRITICAL: Set evil-want-C-u-scroll BEFORE any module loads Evil
 (setq evil-want-C-u-scroll t)
 
-;; 2. Load modules
-(require 'init-elpa)       ; Package manager
-(require 'init-base)       ; Core settings
-(require 'init-evil)       ; Evil mode
-(require 'init-ui)         ; Visuals
-(require 'init-completion) ; Auto-completion
-(require 'init-projectile) ; Project management
-(require 'init-dired)      ; File browser
-(require 'init-langs)      ; Languages
+;; --- Core Infrastructure ---
+(require 'init-utils)
+(require 'init-elpa)
+
+;; --- Basic Configuration ---
+(require 'init-base)
+(require 'init-evil)
+
+;; --- User Interface ---
+(require 'init-ui)
+
+;; --- Completion Framework ---
+(require 'init-completion)
+
+;; --- Project & File Management ---
+(require 'init-projectile)
+(require 'init-dired)
+
+;; --- Languages ---
+(require 'init-langs)
 (require 'init-markdown)
 
-;; 3. Load auto-generated settings separately
+;; --- Custom Variables ---
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;; --- Local Overrides (optional) ---
+(let ((local-file (expand-file-name "lisp/init-local.el" user-emacs-directory)))
+  (when (file-exists-p local-file)
+    (require 'init-local)))
+
 (provide 'init)
+;;; init.el ends here

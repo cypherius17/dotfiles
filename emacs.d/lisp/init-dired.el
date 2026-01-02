@@ -1,10 +1,15 @@
 ;;; init-dired.el --- Dired configuration -*- lexical-binding: t -*-
 
-;; Core dired settings
-(setq-default dired-dwim-target t)  ; Suggest other dired buffer as target
-(setq dired-recursive-deletes 'top) ; Confirm recursive deletes at top level
+;;; Commentary:
+;; Dired enhancements and customizations.
 
-;; Use GNU ls if available (for better sorting options)
+;;; Code:
+
+;; Core dired settings
+(setq-default dired-dwim-target t)
+(setq dired-recursive-deletes 'top)
+
+;; Use GNU ls if available
 (when (executable-find "gls")
   (setq insert-directory-program "gls"))
 
@@ -17,11 +22,12 @@
   (require 'dired-x))
 
 ;; Enhanced file highlighting
-(use-package diredfl
-  :hook (dired-mode . diredfl-mode))
+(when (maybe-require-package 'diredfl)
+  (add-hook 'dired-mode-hook 'diredfl-mode))
 
 ;; Show git status in dired
-(use-package diff-hl
-  :hook (dired-mode . diff-hl-dired-mode))
+(when (maybe-require-package 'diff-hl)
+  (add-hook 'dired-mode-hook 'diff-hl-dired-mode))
 
 (provide 'init-dired)
+;;; init-dired.el ends here

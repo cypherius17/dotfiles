@@ -1,36 +1,37 @@
-;;; init-completion.el --- Vertico and Corfu -*- lexical-binding: t -*-
+;;; init-completion.el --- Completion framework -*- lexical-binding: t -*-
 
-;; 1. Vertico (The drop-down menu for M-x and file switching)
-(use-package vertico
-  :init
-  (vertico-mode)
-  :bind (:map vertico-map
-         ("C-j" . vertico-next)
-         ("C-k" . vertico-previous)))
+;;; Commentary:
+;; Vertico, Consult, Corfu, Orderless, and Marginalia configuration.
 
-(use-package consult
-  :bind (;; A recursive grep
-         ("C-s" . consult-line)           ; Search inside file (better than default C-s)
-         ("C-c s" . consult-ripgrep)      ; Search across project with ripgrep
-         ("C-x b" . consult-buffer)       ; Switch buffer (better than default C-x b)
-         ("M-y" . consult-yank-pop)       ; Show kill-ring history
-         ;; THEMES
-         ("C-c t" . consult-theme)))      ; Bind C-c t to switch themes
+;;; Code:
 
-;; 2. Orderless (Fuzzy matching, e.g., type "init comp" to find "init-completion.el")
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+;; --- Vertico (Minibuffer completion) ---
+(when (maybe-require-package 'vertico)
+  (add-hook 'after-init-hook 'vertico-mode)
+  (with-eval-after-load 'vertico
+    (define-key vertico-map (kbd "C-j") 'vertico-next)
+    (define-key vertico-map (kbd "C-k") 'vertico-previous)))
 
-;; 3. Corfu (In-buffer auto-completion popup, replaces Company)
-(use-package corfu
-  :init
-  (global-corfu-mode))
+;; --- Consult (Enhanced commands) ---
+(when (maybe-require-package 'consult)
+  (global-set-key (kbd "C-s") 'consult-line)
+  (global-set-key (kbd "C-c s") 'consult-ripgrep)
+  (global-set-key (kbd "C-x b") 'consult-buffer)
+  (global-set-key (kbd "M-y") 'consult-yank-pop)
+  (global-set-key (kbd "C-c t") 'consult-theme))
 
-;; 4. Marginalia (Adds descriptions to M-x commands)
-(use-package marginalia
-  :init
-  (marginalia-mode))
+;; --- Orderless (Fuzzy matching) ---
+(when (maybe-require-package 'orderless)
+  (setq completion-styles '(orderless basic))
+  (setq completion-category-overrides '((file (styles basic partial-completion)))))
+
+;; --- Corfu (In-buffer completion) ---
+(when (maybe-require-package 'corfu)
+  (add-hook 'after-init-hook 'global-corfu-mode))
+
+;; --- Marginalia (Minibuffer annotations) ---
+(when (maybe-require-package 'marginalia)
+  (add-hook 'after-init-hook 'marginalia-mode))
 
 (provide 'init-completion)
+;;; init-completion.el ends here

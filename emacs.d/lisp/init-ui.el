@@ -1,10 +1,24 @@
-;;; init-ui.el --- Visuals -*- lexical-binding: t -*-
+;;; init-ui.el --- Visual configuration -*- lexical-binding: t -*-
 
-(use-package doom-themes
-  :config (load-theme 'doom-zenburn t))
+;;; Commentary:
+;; Theme, modeline, and display settings.
 
-(use-package doom-modeline
-  :init (doom-modeline-mode 1))
+;;; Code:
 
-(global-display-line-numbers-mode)
+;; --- Doom Themes ---
+(require-package 'doom-themes)
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (load-theme 'doom-zenburn t)))
+
+;; --- Doom Modeline ---
+(require-package 'doom-modeline)
+
+(add-hook 'after-init-hook 'doom-modeline-mode)
+
+;; --- Line Numbers ---
+(add-hook 'after-init-hook 'global-display-line-numbers-mode)
+
 (provide 'init-ui)
+;;; init-ui.el ends here
