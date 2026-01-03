@@ -84,7 +84,11 @@
 
 ;; 5. Use K for LSP hover info (Eglot support)
 (with-eval-after-load 'eglot
-		        (define-key evil-normal-state-map (kbd "K") 'eldoc-doc-buffer))
+  (define-key evil-normal-state-map (kbd "K") 'eldoc-doc-buffer))
+
+;; 6. Go-to-definition keybindings (gd, gD)
+(define-key evil-normal-state-map (kbd "gd") 'xref-find-definitions)
+(define-key evil-normal-state-map (kbd "gD") 'xref-find-references)
 
 (provide 'init-evil)
 ;;; init-evil.el ends here
