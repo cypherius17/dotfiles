@@ -52,5 +52,12 @@
                 java-mode-hook))
   (add-hook hook 'eglot-ensure))
 
+;; Enable Eglot for TSX/JSX files in web-mode
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (and buffer-file-name
+                       (string-match-p "\\.[tj]sx?\\'" buffer-file-name))
+              (eglot-ensure))))
+
 (provide 'init-langs)
 ;;; init-langs.el ends here

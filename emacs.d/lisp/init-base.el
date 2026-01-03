@@ -64,7 +64,17 @@
       "p"  '(:ignore t :which-key "project")
       "pf" '(projectile-find-file :which-key "find file")
       "pp" '(projectile-switch-project :which-key "switch project")
-      "ps" '(projectile-ripgrep :which-key "search text"))))
+      "ps" '(projectile-ripgrep :which-key "search text")
+
+      ;; LSP (l)
+      "l"  '(:ignore t :which-key "lsp")
+      "ld" '(xref-find-definitions :which-key "go to definition")
+      "lr" '(xref-find-references :which-key "find references")
+      "ln" '(eglot-rename :which-key "rename symbol")
+      "la" '(eglot-code-actions :which-key "code actions")
+      "lf" '(eglot-format :which-key "format")
+      "li" '(eglot-find-implementation :which-key "find implementation")
+      "lh" '(eldoc :which-key "hover doc"))))
 
 (provide 'init-base)
 ;;; init-base.el ends here
