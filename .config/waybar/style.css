@@ -1,0 +1,95 @@
+* {
+    font-family: "JetBrainsMono Nerd Font Mono", monospace;
+    font-size: 13px;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background-color: #282828;
+    color: #ebdbb2;
+    border-bottom: 2px solid #3c3836;
+}
+
+/* Left modules */
+#workspaces {
+    margin: 0 4px;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    color: #928374;
+    background: transparent;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button.active {
+    color: #fabd2f;
+    background: rgba(250, 189, 47, 0.15);
+}
+
+#workspaces button:hover {
+    color: #ebdbb2;
+    background: rgba(235, 219, 178, 0.1);
+}
+
+#window {
+    color: #a89984;
+    font-style: italic;
+    padding: 0 8px;
+}
+
+/* Center */
+#clock {
+    color: #fabd2f;
+    font-weight: bold;
+    padding: 0 16px;
+}
+
+/* Right modules - each gets a gruvbox accent color */
+#cpu {
+    color: #b8bb26;
+    padding: 0 8px;
+}
+
+#cpu.warning {
+    color: #fe8019;
+}
+
+#cpu.critical {
+    color: #fb4934;
+}
+
+#temperature {
+    color: #8ec07c;
+    padding: 0 8px;
+}
+
+#temperature.warning {
+    color: #fe8019;
+}
+
+#temperature.critical {
+    color: #fb4934;
+    animation: blink 0.5s infinite;
+}
+
+#memory {
+    color: #83a598;
+    padding: 0 8px;
+}
+
+#pulseaudio {
+    color: #d3869b;
+    padding: 0 8px;
+}
+
+#pulseaudio.muted {
+    color: #928374;
+}
+
+@keyframes blink {
+    to { color: #282828; background-color: #fb4934; }
+}
