@@ -108,6 +108,39 @@
 (use-package magit
   :commands magit-status)
 
+;; ── Vterm (integrated terminal) ──────────────────────────
+(use-package vterm
+  :commands vterm
+  :config
+  (setq vterm-max-scrollback 10000)
+  (setq vterm-kill-buffer-on-exit t))
+
+;; Toggle vterm like VSCode's Ctrl+`
+(use-package vterm-toggle
+  :after vterm
+  :config
+  (setq vterm-toggle-fullscreen-p nil)
+  (setq vterm-toggle-scope 'project)
+  (add-to-list 'display-buffer-alist
+    '((lambda (buffer-or-name _)
+        (let ((buffer (get-buffer buffer-or-name)))
+          (with-current-buffer buffer
+            (or (equal major-mode 'vterm-mode)
+                (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+      (display-buffer-reuse-window display-buffer-at-bottom)
+      (reusable-frames . visible)
+      (window-height . 0.3))))   ; 30% of screen height, like VSCode
+
+;; ── Leader keybindings ───────────────────────────────────
+(with-eval-after-load 'evil
+  (evil-set-leader 'normal (kbd "SPC"))
+  (evil-define-key 'normal 'global
+    (kbd "<leader>gg") 'magit-status
+    (kbd "<leader>ff") 'find-file
+    (kbd "<leader>bb") 'consult-buffer
+    (kbd "<leader>fs") 'save-buffer
+    (kbd "<leader>tt") 'vterm-toggle))
+
 ;;; init.el ends here
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

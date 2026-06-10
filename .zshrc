@@ -45,6 +45,8 @@ alias ga='git add'
 alias gc='git commit'
 alias gp='git push'
 alias gl='git log --oneline --graph --decorate'
+alias e='emacsclient -c --no-wait'
+alias et='emacsclient -nw'
 
 # ── Plugins ──────────────────────────────────────────────
 source ~/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh

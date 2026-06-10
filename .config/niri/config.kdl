@@ -276,6 +276,8 @@ spawn-at-startup "waybar"
 spawn-at-startup "fcitx5" "-d"
 spawn-at-startup "mako"
 spawn-at-startup "sh" "-c" "wl-paste --watch cliphist store"
+spawn-at-startup "emacs" "--daemon"
+spawn-at-startup "ghostty"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
