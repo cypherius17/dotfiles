@@ -32,7 +32,7 @@
 (setq scroll-conservatively 101)
 (delete-selection-mode 1)
 (electric-pair-mode 1)
-(global-auto-revert-mode 1)        ; auto-reload files changed on disk
+(global-auto-revert-mode 1)
 
 ;; ── Visual ───────────────────────────────────────────────
 (column-number-mode 1)
@@ -116,44 +116,9 @@
   ("C-s"   . consult-line)
   ("C-x b" . consult-buffer))
 
-;; ── Go indentation ───────────────────────────────────────
-(add-hook 'go-ts-mode-hook (lambda ()
-  (setq tab-width 4)
-  (setq go-ts-mode-indent-offset 4)))
-
-;; ── Tree-sitter auto-modes ───────────────────────────────
-(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
-
-;; ── Magit ────────────────────────────────────────────────
-(use-package magit
-  :commands magit-status)
-
-;; ── Vterm (integrated terminal) ──────────────────────────
-(use-package vterm
-  :commands vterm
-  :config
-  (setq vterm-max-scrollback 10000)
-  (setq vterm-kill-buffer-on-exit t))
-
-;; Toggle vterm like VSCode's Ctrl+`
-(use-package vterm-toggle
-  :after vterm
-  :config
-  (setq vterm-toggle-fullscreen-p nil)
-  (setq vterm-toggle-scope 'project)
-  (add-to-list 'display-buffer-alist
-    '((lambda (buffer-or-name _)
-        (let ((buffer (get-buffer buffer-or-name)))
-          (with-current-buffer buffer
-            (or (equal major-mode 'vterm-mode)
-                (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
-      (display-buffer-reuse-window display-buffer-at-bottom)
-      (reusable-frames . visible)
-      (window-height . 0.3))))   ; 30% of screen height, like VSCode
-
 ;; ── Go (tree-sitter + eglot) ─────────────────────────────
 (use-package go-ts-mode
-  :ensure nil                     ; built into Emacs 29+, not a MELPA package
+  :ensure nil
   :mode "\\.go\\'"
   :hook (go-ts-mode . eglot-ensure)
   :config
@@ -169,13 +134,43 @@
             nil t))
 (add-hook 'go-ts-mode-hook #'my/eglot-go-save-hooks)
 
-;; ── Corfu (completion UI, global — not Go-specific) ──────
+;; ── Corfu (completion UI) ────────────────────────────────
 (use-package corfu
   :init
   (global-corfu-mode)
   :custom
   (corfu-cycle t)
   (corfu-auto t))
+
+;; ── Magit ────────────────────────────────────────────────
+(use-package magit
+  :commands magit-status)
+
+;; ── Vterm (integrated terminal) ──────────────────────────
+(use-package vterm
+  :commands vterm
+  :config
+  (setq vterm-max-scrollback 10000)
+  (setq vterm-kill-buffer-on-exit t))
+
+(use-package vterm-toggle
+  :after vterm
+  :config
+  (setq vterm-toggle-fullscreen-p nil)
+  (setq vterm-toggle-scope 'project)
+  (add-to-list 'display-buffer-alist
+    '((lambda (buffer-or-name _)
+        (let ((buffer (get-buffer buffer-or-name)))
+          (with-current-buffer buffer
+            (or (equal major-mode 'vterm-mode)
+                (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+      (display-buffer-reuse-window display-buffer-at-bottom)
+      (reusable-frames . visible)
+      (window-height . 0.3))))
+
+;; ── Project navigation ───────────────────────────────────
+(require 'project)
+(setq project-switch-commands 'project-find-file)
 
 ;; ── Leader keybindings ───────────────────────────────────
 (with-eval-after-load 'evil
@@ -188,20 +183,10 @@
     (kbd "<leader>tt") 'vterm-toggle
     (kbd "<leader>ca") 'eglot-code-actions
     (kbd "<leader>cr") 'eglot-rename
-    (kbd "<leader>cf") 'eglot-format-buffer))
+    (kbd "<leader>cf") 'eglot-format-buffer
+    (kbd "<leader>pf") 'project-find-file
+    (kbd "<leader>pp") 'project-switch-project
+    (kbd "<leader>pg") 'project-find-regexp
+    (kbd "<leader>pd") 'project-dired))
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(consult evil-collection exec-path-from-shell gruvbox-theme magit
-             orderless vertico vterm vterm-toggle)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
