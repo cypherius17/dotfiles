@@ -219,6 +219,9 @@
     (kbd "<leader>pg") 'project-find-regexp
     (kbd "<leader>pd") 'project-dired
     (kbd "<leader>ct") 'my/toggle-corfu-auto
+    (kbd "<leader>jj") 'avy-goto-char-timer
+    (kbd "<leader>jw") 'avy-goto-word-1
+    (kbd "<leader>jl") 'avy-goto-line
     (kbd "]d") 'flymake-goto-next-error
     (kbd "[d") 'flymake-goto-prev-error)
 
