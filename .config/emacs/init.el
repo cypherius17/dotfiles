@@ -140,7 +140,33 @@
   (global-corfu-mode)
   :custom
   (corfu-cycle t)
-  (corfu-auto t))
+  (corfu-auto nil))   ; manual trigger by default — summon with M-TAB / C-M-i
+
+(defun my/toggle-corfu-auto ()
+  "Flip Corfu's automatic popup on/off without restarting Emacs."
+  (interactive)
+  (setq corfu-auto (not corfu-auto))
+  (message "Corfu auto-complete: %s" (if corfu-auto "ON" "OFF")))
+
+;; ── Avy + evil-easymotion (jump-to-anything) ─────────────
+(use-package avy
+  :commands (avy-goto-char-timer avy-goto-line avy-goto-word-1))
+
+(use-package evil-easymotion
+  :after evil
+  :config
+  (evilem-default-keybindings "SPC SPC"))
+
+;; ── Autosave (IntelliJ-style continuous save) ────────────
+;; make-backup-files / auto-save-default are already nil above,
+;; this just adds real, continuous saving on top of that.
+(use-package super-save
+  :config
+  (setq super-save-silent t)
+  (super-save-mode 1))
+
+(auto-save-visited-mode 1)
+(setq auto-save-visited-interval 2)
 
 ;; ── Magit ────────────────────────────────────────────────
 (use-package magit
@@ -187,6 +213,24 @@
     (kbd "<leader>pf") 'project-find-file
     (kbd "<leader>pp") 'project-switch-project
     (kbd "<leader>pg") 'project-find-regexp
-    (kbd "<leader>pd") 'project-dired))
+    (kbd "<leader>pd") 'project-dired
+    (kbd "<leader>ct") 'my/toggle-corfu-auto
+    (kbd "]d") 'flymake-goto-next-error
+    (kbd "[d") 'flymake-goto-prev-error))
 
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(avy consult corfu evil-collection evil-easymotion
+         exec-path-from-shell gruvbox-theme magit orderless super-save
+         vertico vterm-toggle)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
