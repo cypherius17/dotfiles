@@ -63,10 +63,14 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;; ── macOS path fix ───────────────────────────────────────
+;; ── Shell PATH fix ───────────────────────────────────────
+;; Needed everywhere Emacs is launched outside a login shell —
+;; on this setup, niri's spawn-at-startup execs `emacs --daemon`
+;; directly, bypassing .zshrc entirely.
 (use-package exec-path-from-shell
-  :if (eq system-type 'darwin)
+  :if (memq window-system '(mac ns x pgtk))
   :config
+  (setq exec-path-from-shell-arguments '("-l" "-i")) ; -i so .zshrc's PATH is picked up too
   (exec-path-from-shell-initialize))
 
 ;; ── Theme ────────────────────────────────────────────────
@@ -149,13 +153,13 @@
   (message "Corfu auto-complete: %s" (if corfu-auto "ON" "OFF")))
 
 ;; ── Avy + evil-easymotion (jump-to-anything) ─────────────
+;; key binding itself lives in the Leader keybindings block below —
+;; must run *after* evil-set-leader, which rebuilds the SPC keymap
 (use-package avy
   :commands (avy-goto-char-timer avy-goto-line avy-goto-word-1))
 
 (use-package evil-easymotion
-  :after evil
-  :config
-  (evilem-default-keybindings "SPC SPC"))
+  :after evil)
 
 ;; ── Autosave (IntelliJ-style continuous save) ────────────
 ;; make-backup-files / auto-save-default are already nil above,
@@ -216,21 +220,11 @@
     (kbd "<leader>pd") 'project-dired
     (kbd "<leader>ct") 'my/toggle-corfu-auto
     (kbd "]d") 'flymake-goto-next-error
-    (kbd "[d") 'flymake-goto-prev-error))
+    (kbd "[d") 'flymake-goto-prev-error)
+
+  ;; must come after the evil-define-key call above, since
+  ;; evil-set-leader/evil-define-key both rebuild the SPC keymap
+  (evil-define-key '(normal visual) 'global
+    (kbd "SPC SPC") evilem-map))
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(avy consult corfu evil-collection evil-easymotion
-         exec-path-from-shell gruvbox-theme magit orderless super-save
-         vertico vterm-toggle)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
