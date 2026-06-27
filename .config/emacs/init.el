@@ -8,6 +8,18 @@
 (menu-bar-mode -1)
 (set-fringe-mode 8)
 
+;; ── Tree-sitter grammar sources ──────────────────────────
+(setq treesit-language-source-alist
+      '((go         "https://github.com/tree-sitter/tree-sitter-go")
+        (gomod      "https://github.com/camdencheek/tree-sitter-go-mod")
+        (python     "https://github.com/tree-sitter/tree-sitter-python")
+        (yaml       "https://github.com/tree-sitter-grammars/tree-sitter-yaml")
+        (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+        (bash       "https://github.com/tree-sitter/tree-sitter-bash")
+        (json       "https://github.com/tree-sitter/tree-sitter-json")
+        (toml       "https://github.com/tree-sitter-grammars/tree-sitter-toml")
+        (markdown   "https://github.com/tree-sitter-grammars/tree-sitter-markdown")))
+
 ;; ── Core settings ────────────────────────────────────────
 (setq ring-bell-function 'ignore)
 (setq use-short-answers t)
@@ -104,6 +116,14 @@
   ("C-s"   . consult-line)
   ("C-x b" . consult-buffer))
 
+;; ── Go indentation ───────────────────────────────────────
+(add-hook 'go-ts-mode-hook (lambda ()
+  (setq tab-width 4)
+  (setq go-ts-mode-indent-offset 4)))
+
+;; ── Tree-sitter auto-modes ───────────────────────────────
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+
 ;; ── Magit ────────────────────────────────────────────────
 (use-package magit
   :commands magit-status)
@@ -131,6 +151,32 @@
       (reusable-frames . visible)
       (window-height . 0.3))))   ; 30% of screen height, like VSCode
 
+;; ── Go (tree-sitter + eglot) ─────────────────────────────
+(use-package go-ts-mode
+  :ensure nil                     ; built into Emacs 29+, not a MELPA package
+  :mode "\\.go\\'"
+  :hook (go-ts-mode . eglot-ensure)
+  :config
+  (setq go-ts-mode-indent-offset 4))
+
+(setq-default eglot-workspace-configuration
+  '((:gopls . ((staticcheck . t) (usePlaceholders . t)))))
+
+(defun my/eglot-go-save-hooks ()
+  (add-hook 'before-save-hook #'eglot-format-buffer -10 t)
+  (add-hook 'before-save-hook
+            (lambda () (call-interactively #'eglot-code-action-organize-imports))
+            nil t))
+(add-hook 'go-ts-mode-hook #'my/eglot-go-save-hooks)
+
+;; ── Corfu (completion UI, global — not Go-specific) ──────
+(use-package corfu
+  :init
+  (global-corfu-mode)
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t))
+
 ;; ── Leader keybindings ───────────────────────────────────
 (with-eval-after-load 'evil
   (evil-set-leader 'normal (kbd "SPC"))
@@ -139,7 +185,10 @@
     (kbd "<leader>ff") 'find-file
     (kbd "<leader>bb") 'consult-buffer
     (kbd "<leader>fs") 'save-buffer
-    (kbd "<leader>tt") 'vterm-toggle))
+    (kbd "<leader>tt") 'vterm-toggle
+    (kbd "<leader>ca") 'eglot-code-actions
+    (kbd "<leader>cr") 'eglot-rename
+    (kbd "<leader>cf") 'eglot-format-buffer))
 
 ;;; init.el ends here
 (custom-set-variables
@@ -147,7 +196,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '(consult evil-collection exec-path-from-shell gruvbox-theme magit
+             orderless vertico vterm vterm-toggle)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

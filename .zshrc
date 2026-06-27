@@ -45,8 +45,12 @@ alias ga='git add'
 alias gc='git commit'
 alias gp='git push'
 alias gl='git log --oneline --graph --decorate'
-alias e='emacsclient -c --no-wait'
-alias et='emacsclient -nw'
+# ── Emacs client ─────────────────────────────────────────
+alias e='emacsclient -c --no-wait --alternate-editor="emacs"'
+alias et='emacsclient -nw --alternate-editor="emacs"'
+
+# ── Secrets (not in git) ─────────────────────────────────
+[[ -f ~/.secrets ]] && source ~/.secrets
 
 # ── Plugins ──────────────────────────────────────────────
 source ~/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -59,5 +63,11 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 # Accept suggestion with right arrow (default) or Ctrl+F
 bindkey '^F' autosuggest-accept
 
+# Auto-attach to tmux
+if command -v tmux &>/dev/null && [ -z "$TMUX" ] && [ -z "$EMACS" ]; then
+    tmux attach -t main 2>/dev/null || tmux new -s main
+fi
+
 # ── Starship prompt ──────────────────────────────────────
 eval "$(starship init zsh)"
+export PATH="$HOME/.npm-global/bin:$PATH"

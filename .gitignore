@@ -1,0 +1,14 @@
+.secrets
+
+# SSH keys
+.ssh/id_*
+.ssh/*.pem
+.ssh/known_hosts
+.ssh/authorized_keys
+
+# Emacs generated files
+.config/emacs/elpa/
+.config/emacs/eln-cache/
+.config/emacs/tree-sitter/
+.config/emacs/auto-save-list/
+.config/emacs/.cache/
