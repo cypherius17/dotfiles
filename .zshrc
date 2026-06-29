@@ -70,4 +70,4 @@ fi
 
 # ── Starship prompt ──────────────────────────────────────
 eval "$(starship init zsh)"
-export PATH="$HOME/.npm-global/bin:$PATH"
+export PATH="$HOME/.npm-global/bin:$HOME/go/bin:$PATH"
