@@ -33,9 +33,17 @@ function zle-keymap-select {
 zle -N zle-keymap-select
 
 # ── Aliases ──────────────────────────────────────────────
-alias ls='ls --color=auto'
-alias ll='ls -lah --color=auto'
-alias la='ls -A --color=auto'
+# BSD ls (macOS) doesn't understand the GNU --color=auto long option,
+# so it needs its own flag (-G) instead.
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias ls='ls -G'
+  alias ll='ls -lahG'
+  alias la='ls -AG'
+else
+  alias ls='ls --color=auto'
+  alias ll='ls -lah --color=auto'
+  alias la='ls -A --color=auto'
+fi
 alias grep='grep --color=auto'
 alias c='clear'
 alias ..='cd ..'
